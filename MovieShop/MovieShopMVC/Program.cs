@@ -33,6 +33,8 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 
 
 builder.Services.AddHttpContextAccessor();
+
+//importdb
 builder.Services.AddDbContext<MovieShopDbContext>(
     options =>
     {
