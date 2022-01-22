@@ -18,5 +18,10 @@ namespace ApplicationCore.Contracts.Repositories
 /*        Task AddReviewForUser(ReviewRequestModel model);*/
         Task AddReview(Review review);
         Task AddFavorite(Favorite favorite);
+        Task<Purchase> GetPurchaseByMovieUserId(int userId, int movieId);
+        Task<Favorite> GetFavoriteByMovieUserId(int movieId, int userId);
+        Task DeleteReview(int userId, int movieId);
+        Task<Review> UpdateReview(int userId, int movieId, decimal rating, string reviewtext);
+        
     }
 }

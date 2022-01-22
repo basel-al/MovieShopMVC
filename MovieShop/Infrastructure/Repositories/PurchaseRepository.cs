@@ -25,10 +25,6 @@ namespace Infrastructure.Repositories
                 .ToListAsync();
             return purchases;
         }
-        public async Task AddPurchase(PurchaseRequestModel purchase)
-        {
-           /* var purchases = await _dbContext.Purchases.Add(new Purchase { UserId = purchase.UserId});*/
-        }
         public async Task<int> GetNumberOfPurchases()
         {
             var num = await _dbContext.Purchases.CountAsync();

@@ -53,15 +53,17 @@ namespace Infrastructure.Services
 
         public async Task DeleteMovieReview(int userId, int movieId)
         {
-            var movies = await _movieRepository.GetById(movieId);
-            var reviewedMovie = movies.Reviews.Where(x => x.UserId == userId);
-            
+            await _userRepository.DeleteReview(userId, movieId);
 
         }
         public async Task<bool> FavoriteExists(int id, int movieId)
         {
-            var purchases = await _movieRepository.GetById(movieId);
-            throw new NotImplementedException();
+            var favorite = await _userRepository.GetFavoriteByMovieUserId(movieId, id);
+            if(favorite != null)
+            {
+                return true;
+            }
+            return false;
         }
 
         public async Task<FavoriteResponseModel> GetAllFavoritesForUser(int id)
@@ -115,46 +117,26 @@ namespace Infrastructure.Services
 
         public async Task<PurchaseDetailsResponseModel> GetPurchasesDetails(int userId, int movieId)
         {
-            var purchases = await _purchaseRepository.GetAll();
-            foreach (var purchase in purchases)
+            var purchase = await _userRepository.GetPurchaseByMovieUserId(userId, movieId);
+            var purchasemodel = new PurchaseDetailsResponseModel
             {
-                if (purchase.UserId == userId && purchase.MovieId == movieId)
-                {
-                    return new PurchaseDetailsResponseModel
-                    {
-                        Id = purchase.Id,
-                        UserId = purchase.UserId,
-                        PurchaseNumber = purchase.PurchaseNumber,
-                        TotalPrice = purchase.TotalPrice,
-                        PurchaseDateTime = purchase.PurchaseDateTime,
-                        MovieId = purchase.MovieId,
-                        Title = purchase.Movie.Title,
-                        PosterUrl = purchase.Movie.PosterUrl,
-                        ReleaseDate = purchase.Movie.ReleaseDate.GetValueOrDefault(),
-                    };
-                }
-            }
-            throw new Exception("error");
-
-
+                Id = purchase.Id,
+                UserId = purchase.UserId,
+                PurchaseNumber = purchase.PurchaseNumber,
+                PurchaseDateTime = purchase.PurchaseDateTime,
+                TotalPrice = purchase.TotalPrice
+            };
+            return purchasemodel;
         }
-
         public async Task<bool> IsMoviePurchased(PurchaseRequestModel purchaseRequest, int userId)
         {
-            var y = await _purchaseRepository.GetByUserId(userId);
-            
-            var purchases = await _purchaseRepository.GetByUserId(userId);
-            foreach (var purchase in purchases)
+            var movie = await _userRepository.GetPurchaseByMovieUserId(userId, purchaseRequest.MovieId);
+            if(movie != null)
             {
-                if (purchase.MovieId == purchaseRequest.MovieId)
-                {
-                    return true;
-                }
+                return true;
             }
             return false;
-
         }
-
         public async Task<bool> PurchaseMovie(PurchaseRequestModel purchaseRequest, int userId)
         {
             var movieprice = await _userRepository.GetPriceDetails(purchaseRequest.MovieId);
@@ -175,31 +157,17 @@ namespace Infrastructure.Services
             {
                 return false;
             }
-
-
         }
-
        public async Task RemoveFavorite(FavoriteRequestModel favoriteRequest)
         {
-            /*            var movies = await _userRepository.Delete
-                        var favoritedMovie = movies.Favorite.Where(x => x.UserId == favoriteRequest.UserId);
-                        favoritedMovie.ToList().RemoveAt(0);*/
-            throw new NotImplementedException();
-            
+            await _userRepository.DeleteFavorite(favoriteRequest.UserId, favoriteRequest.MovieId);
+
         }
 
         public async Task UpdateMovieReview(ReviewRequestModel reviewRequest)
         {
-            var movies = await _movieRepository.GetById(reviewRequest.MovieId);
-            var favoritedMovie = movies.Favorite.Where(x => x.UserId == reviewRequest.UserId);
-            var x = new Review
-            {
-                MovieId = reviewRequest.MovieId,
-                UserId = reviewRequest.UserId,
-                Rating = reviewRequest.Rating,
-                ReviewText = reviewRequest.ReviewText,
-            };
-            favoritedMovie.ToList().RemoveAt(0);
+            await _userRepository.UpdateReview(reviewRequest.UserId, reviewRequest.MovieId, reviewRequest.Rating, reviewRequest.ReviewText);
+
         }
     }
 }

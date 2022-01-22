@@ -11,6 +11,6 @@ namespace ApplicationCore.Contracts.Repositories
     public interface IPurchaseRepository : IRepository<Purchase>
     {
         Task<List<Purchase>> GetByUserId(int userId);
-        Task AddPurchase(PurchaseRequestModel purchase);
+        Task<int> GetNumberOfPurchases();
     }
 }

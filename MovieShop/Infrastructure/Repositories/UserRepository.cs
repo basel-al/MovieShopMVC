@@ -31,19 +31,20 @@ namespace Infrastructure.Repositories
         }
         public async Task<List<Favorite>> GetFavoritesOfUser(int userId)
         {
-            var favs = await _dbContext.Favorites.Where(x => x.UserId == userId).Include(m=>m.Movie).ToListAsync();
+            var favs = await _dbContext.Favorites.Where(x => x.UserId == userId).Include(m => m.Movie).ToListAsync();
             return favs;
         }
         public async Task DeleteFavorite(int movieId, int userId)
         {
-            _dbContext.Remove(_dbContext.Favorites.Where(x => x.UserId == userId).Where(x => x.MovieId == movieId));
-            _dbContext.SaveChangesAsync();
+
+            await _dbContext.Favorites.Where(u => u.UserId == userId && u.MovieId == movieId).SingleOrDefaultAsync();
+            await _dbContext.SaveChangesAsync();
 
         }
         public async Task DeleteReview(int movieId, int userId)
         {
-            _dbContext.Remove(_dbContext.Reviews.Where(x => x.UserId == userId).Where(x => x.MovieId == movieId));
-            _dbContext.SaveChangesAsync();
+            await _dbContext.Reviews.Where(u => u.UserId == userId && u.MovieId == movieId).SingleOrDefaultAsync();
+            await _dbContext.SaveChangesAsync();
 
         }
         public async Task<decimal> GetPriceDetails(int theid)
@@ -56,22 +57,47 @@ namespace Infrastructure.Repositories
         public async Task<List<Review>> GetReviewsOfUser(int userId)
         {
             var reviews = await _dbContext.Reviews.Where(x => x.UserId == userId).ToListAsync();
-            return reviews;     
+            return reviews;
 
         }
         public async Task AddReview(Review review)
         {
             _dbContext.Reviews.Add(review);
             _dbContext.SaveChangesAsync();
-            
+
         }
         public async Task AddFavorite(Favorite favorite)
         {
             _dbContext.Favorites.Add(favorite);
             _dbContext.SaveChangesAsync();
 
+        }
+        public async Task<Favorite> GetFavoriteByMovieUserId(int movieId, int userId)
+        {
+            var favorite = await _dbContext.Favorites.Where(x => x.UserId == userId).Include(x => x.MovieId == movieId).FirstOrDefaultAsync();
+            return favorite;
+        }
+        public async Task<Review> UpdateReview(int userId, int movieId, decimal rating, string reviewtext)
+        {
+            var review = await _dbContext.Reviews.Where(u => u.UserId == userId && u.MovieId == movieId).SingleOrDefaultAsync();
+            if (review != null)
+            {
+                review.Rating = rating;
+                review.ReviewText = reviewtext;
+                await _dbContext.SaveChangesAsync();
+                return review;
+            }
+            var newReview = new Review { UserId = userId, MovieId = movieId, Rating = rating, ReviewText = reviewtext };
+            await _dbContext.Reviews.AddAsync(newReview);
+            await _dbContext.SaveChangesAsync();
+            return newReview;
 
+        }
+        public async Task<Purchase> GetPurchaseByMovieUserId(int userId, int movieId)
+        {
 
+            var purchaseDetail = await _dbContext.Purchases.Where(u => u.UserId == userId && u.MovieId == movieId).SingleOrDefaultAsync();
+            return purchaseDetail;
         }
     }
 }
