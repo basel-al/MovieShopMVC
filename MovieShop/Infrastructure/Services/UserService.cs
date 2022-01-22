@@ -23,6 +23,7 @@ namespace Infrastructure.Services
             _userRepository = userRepository;
             _movieRepository = movieRepository;
         }
+
         public async Task AddFavorite(FavoriteRequestModel favoriteRequest)
         {
             var newFavorite = new Favorite
@@ -36,15 +37,16 @@ namespace Infrastructure.Services
         }
         public async Task AddMovieReview(ReviewRequestModel reviewRequest)
         {
+            var movie = await _movieRepository.GetById(reviewRequest.MovieId);
             var newReview = new Review
             {
                 MovieId = reviewRequest.MovieId,
                 UserId = reviewRequest.UserId,
                 Rating = reviewRequest.Rating,
                 ReviewText = reviewRequest.ReviewText,
+                Movie = movie
             };
-            var movie = await _movieRepository.GetById(reviewRequest.MovieId);
-            movie.Reviews.Add(newReview);
+            await _userRepository.AddReview(newReview);
         }
 
         public async Task DeleteMovieReview(int userId, int movieId)
@@ -134,13 +136,13 @@ namespace Infrastructure.Services
             var y = await _purchaseRepository.GetPurchasesOfUser(userId);
             foreach(var t in y)
             {
-                
-                t.Id = purchaseRequest.Id;
+                t.UserId = userId;
+/*                t.Id = purchaseRequest.Id;
                 t.UserId = userId;
                 t.PurchaseNumber = purchaseRequest.PurchaseNumber;
                 t.TotalPrice = purchaseRequest.TotalPrice;
                 t.PurchaseDateTime = purchaseRequest.PurchaseDateTime;
-                t.MovieId = purchaseRequest.MovieId;
+                t.MovieId = purchaseRequest.MovieId;*/
             }
             var purchases = await _purchaseRepository.GetByUserId(userId);
             foreach (var purchase in purchases)
@@ -155,14 +157,17 @@ namespace Infrastructure.Services
         }
 
         public async Task<bool> PurchaseMovie(PurchaseRequestModel purchaseRequest, int userId)
-        {           
+        {
+            var movieprice = await _userRepository.GetPriceDetails(purchaseRequest.MovieId);
+    /*        var newId = await _purchaseRepository.GetNumberOfPurchases();
+            newId = newId + 1;*/
             var newPurchase = new Purchase
-            {      
-                Id = purchaseRequest.Id,
+            {
+                MovieId = purchaseRequest.MovieId,
                 UserId = userId,
-               /*PurchaseNumber = purchaseRequest.PurchaseNumber,*/
-                TotalPrice = purchaseRequest.TotalPrice,
-                PurchaseDateTime = purchaseRequest.PurchaseDateTime,
+                PurchaseNumber = Guid.NewGuid(),
+                TotalPrice = movieprice,
+                PurchaseDateTime = DateTime.Now
             };
             var dbCreatedPurchase = await _purchaseRepository.Add(newPurchase);
             if (dbCreatedPurchase.Id > 1)

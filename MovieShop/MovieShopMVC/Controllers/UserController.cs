@@ -9,15 +9,17 @@ namespace MovieShopMVC.Controllers
     [Authorize]
     public class UserController : Controller
     {
-        private IUserService _userService;
+        private readonly IUserService _userService;
         private readonly IMovieService _movieService;
-        [Authorize]
-        [HttpGet]
+        public UserController(IUserService userService)
+        {
+            _userService = userService;
+        }
         public async Task<IActionResult> Purchases()
         {
-      
+
             var userId = Convert.ToInt32(HttpContext?.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value);
-            var x=_userService.GetAllPurchasesForUser(userId);
+            var x = _userService.GetAllPurchasesForUser(userId);
             return View();
         }
         [Authorize]
@@ -38,22 +40,24 @@ namespace MovieShopMVC.Controllers
             return null;
 
         }
-       [HttpPost]
-        public async Task<IActionResult> BuyForUser(int id)
+        [HttpPost]
+        public async Task<IActionResult> BuyForUser(int UserId, int MovieId)
         {
-            var moviedetails = await _movieService.GetMovieDetails(id);
             var request = new PurchaseRequestModel
-            { Id = moviedetails.Id,
-                TotalPrice = moviedetails.Price.Value,
-                PurchaseDateTime = DateTime.Now,
+            {
+                UserId = UserId,
+                MovieId = MovieId,
             };
-
-            var x = await _userService.PurchaseMovie(request, id);
-            return View();
+            var x = await _userService.PurchaseMovie(request, UserId);
+            return LocalRedirect("~/");
         }
-/*        public async Task<IActionResult> ReviewByUser(PurchaseRequestModel model)
+        [HttpPost]
+        public async Task<IActionResult> ReviewByUser(ReviewRequestModel model)
         {
-            var x = await _userService.PurchaseMovie.
-        }*/
+
+            await _userService.AddMovieReview(model);
+            return LocalRedirect("~/");
+        }
     }
+    
 }

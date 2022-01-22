@@ -33,6 +33,11 @@ namespace Infrastructure.Repositories
             var purchases = await _dbContext.Purchases.Where(x => x.UserId == userId).ToListAsync();
             return purchases;
         }
+        public async Task<int> GetNumberOfPurchases()
+        {
+            var num = await _dbContext.Purchases.CountAsync();
+            return num;
+        }
 
 
 

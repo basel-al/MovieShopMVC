@@ -22,6 +22,7 @@ namespace ApplicationCore.Contracts.Services
         Task UpdateMovieReview(ReviewRequestModel reviewRequest);
         Task DeleteMovieReview(int userId, int movieId);
         Task<UserReviewResponseModel> GetAllReviewsByUser(int id);
+
         
 
     }

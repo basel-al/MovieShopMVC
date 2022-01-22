@@ -34,20 +34,6 @@ namespace Infrastructure.Repositories
             var favs = await _dbContext.Favorites.Where(x => x.UserId == userId).ToListAsync();
             return favs;
         }
-        /*        public async Task<List<Favorite>> AddFavoriteOfUser(favoriteRequestModel model)
-                {
-                    var favs = await _dbContext.Favorites.Add(new Favorite {Id =, MovieId= , UserId , Movie }
-                    {
-
-                    });
-                }*/
-/*               public async Task<List<Favorite>> AddReviewByUser(ReviewRequestModel model)
-        {
-            var favs = await _dbContext.Reviews.Add(new Review { UserId =, MovieId = , Rating=, ReviewText= });
-            {
-
-            });
-        }*/
         public async Task DeleteFavorite(int movieId, int userId)
         {
             _dbContext.Remove(_dbContext.Favorites.Where(x => x.UserId == userId).Where(x => x.MovieId == movieId));
@@ -58,6 +44,27 @@ namespace Infrastructure.Repositories
         {
             _dbContext.Remove(_dbContext.Reviews.Where(x => x.UserId == userId).Where(x => x.MovieId == movieId));
             _dbContext.SaveChangesAsync();
+
+        }
+        public async Task<decimal> GetPriceDetails(int theid)
+        {
+            //get movie price where movieid = id
+            var movie = await _dbContext.Movies.FirstOrDefaultAsync(x => x.Id == theid);
+            return movie.Price.GetValueOrDefault();
+
+        }
+        public async Task<List<Review>> GetReviewsOfUser(int userId)
+        {
+            var reviews = await _dbContext.Reviews.Where(x => x.UserId == userId).ToListAsync();
+            return reviews;     
+
+        }
+        public async Task AddReview(Review review)
+        {
+            _dbContext.Reviews.Add(review);
+            _dbContext.SaveChangesAsync();
+            
+
 
         }
     }

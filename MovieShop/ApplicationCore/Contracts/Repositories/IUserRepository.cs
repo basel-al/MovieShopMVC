@@ -1,4 +1,5 @@
 ﻿using ApplicationCore.Entities;
+using ApplicationCore.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,5 +13,9 @@ namespace ApplicationCore.Contracts.Repositories
         Task<User> GetUserByEmail(string email);
         Task<List<Favorite>> GetFavoritesOfUser(int userId);
         Task DeleteFavorite(int movieId, int userId);
+        Task<decimal> GetPriceDetails(int theid);
+        Task<List<Review>> GetReviewsOfUser(int userId);
+/*        Task AddReviewForUser(ReviewRequestModel model);*/
+        Task AddReview(Review review);
     }
 }

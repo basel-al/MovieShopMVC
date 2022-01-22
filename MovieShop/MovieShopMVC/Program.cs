@@ -20,6 +20,8 @@ builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<ICastRepository, CastRepository>();
 builder.Services.AddScoped<IRepository<Genre>, EfRepository<Genre>>();
 builder.Services.AddScoped<IGenreService, GenreService>();
+builder.Services.AddScoped<IPurchaseRepository, PurchaseRepository>();
+builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ICurrentLoginUserService, CurrentLoginUserService>();
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
