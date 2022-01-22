@@ -31,7 +31,7 @@ namespace Infrastructure.Repositories
         }
         public async Task<List<Favorite>> GetFavoritesOfUser(int userId)
         {
-            var favs = await _dbContext.Favorites.Where(x => x.UserId == userId).ToListAsync();
+            var favs = await _dbContext.Favorites.Where(x => x.UserId == userId).Include(m=>m.Movie).ToListAsync();
             return favs;
         }
         public async Task DeleteFavorite(int movieId, int userId)
@@ -64,6 +64,12 @@ namespace Infrastructure.Repositories
             _dbContext.Reviews.Add(review);
             _dbContext.SaveChangesAsync();
             
+        }
+        public async Task AddFavorite(Favorite favorite)
+        {
+            _dbContext.Favorites.Add(favorite);
+            _dbContext.SaveChangesAsync();
+
 
 
         }

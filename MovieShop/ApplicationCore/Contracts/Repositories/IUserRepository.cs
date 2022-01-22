@@ -17,5 +17,6 @@ namespace ApplicationCore.Contracts.Repositories
         Task<List<Review>> GetReviewsOfUser(int userId);
 /*        Task AddReviewForUser(ReviewRequestModel model);*/
         Task AddReview(Review review);
+        Task AddFavorite(Favorite favorite);
     }
 }

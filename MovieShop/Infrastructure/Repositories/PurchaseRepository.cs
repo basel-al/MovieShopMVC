@@ -21,17 +21,13 @@ namespace Infrastructure.Repositories
         }
         public async Task<List<Purchase>>  GetByUserId(int userId)
         {
-            var purchases = await _dbContext.Purchases.Where(x => x.UserId == userId).ToListAsync();
+            var purchases = await _dbContext.Purchases.Where(x => x.UserId == userId).Include(m=>m.Movie)
+                .ToListAsync();
             return purchases;
         }
         public async Task AddPurchase(PurchaseRequestModel purchase)
         {
            /* var purchases = await _dbContext.Purchases.Add(new Purchase { UserId = purchase.UserId});*/
-        }
-        public async Task<List<Purchase>> GetPurchasesOfUser(int userId)
-        {
-            var purchases = await _dbContext.Purchases.Where(x => x.UserId == userId).ToListAsync();
-            return purchases;
         }
         public async Task<int> GetNumberOfPurchases()
         {

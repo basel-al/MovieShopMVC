@@ -43,10 +43,6 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTW92aWVzXERldGFpbHMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Basel/Desktop/sepgithub/MovieShop/MovieShopMVC/Views/Purchases/Details.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHVyY2hhc2VzXERldGFpbHMuY3NodG1s
-build_metadata.AdditionalFiles.CssScope = 
-
 [C:/Users/Basel/Desktop/sepgithub/MovieShop/MovieShopMVC/Views/Shared/Components/Genres/Default.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXENvbXBvbmVudHNcR2VucmVzXERlZmF1bHQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
@@ -65,6 +61,14 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/Users/Basel/Desktop/sepgithub/MovieShop/MovieShopMVC/Views/Shared/_ValidationScriptsPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Basel/Desktop/sepgithub/MovieShop/MovieShopMVC/Views/User/Favorites.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlclxGYXZvcml0ZXMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Basel/Desktop/sepgithub/MovieShop/MovieShopMVC/Views/User/Purchases.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlclxQdXJjaGFzZXMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/Basel/Desktop/sepgithub/MovieShop/MovieShopMVC/Views/_ViewImports.cshtml]

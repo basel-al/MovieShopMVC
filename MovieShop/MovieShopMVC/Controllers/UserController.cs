@@ -15,20 +15,21 @@ namespace MovieShopMVC.Controllers
         {
             _userService = userService;
         }
+        [HttpGet]
         public async Task<IActionResult> Purchases()
         {
 
             var userId = Convert.ToInt32(HttpContext?.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value);
-            var x = _userService.GetAllPurchasesForUser(userId);
-            return View();
+            var MyPurchases = await _userService.GetAllPurchasesForUser(userId);
+            return View(MyPurchases);
         }
         [Authorize]
         [HttpGet]
         public async Task<IActionResult> Favorites()
         {
             var userId = Convert.ToInt32(HttpContext?.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value);
-            var x = _userService.GetAllFavoritesForUser(userId);
-            return View();
+            var myFavorites = await _userService.GetAllFavoritesForUser(userId);
+            return View(myFavorites);
         }
         public Task<IActionResult> Profile()
         {
@@ -56,6 +57,13 @@ namespace MovieShopMVC.Controllers
         {
 
             await _userService.AddMovieReview(model);
+            return LocalRedirect("~/");
+        }
+        [HttpPost]
+        public async Task<IActionResult> FavoriteByUser(FavoriteRequestModel model)
+        {
+
+            await _userService.AddFavorite(model);
             return LocalRedirect("~/");
         }
     }

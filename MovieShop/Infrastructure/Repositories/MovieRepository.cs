@@ -38,6 +38,5 @@ namespace Infrastructure.Repositories
             return movieRating;
         }
 
-
     }
 }

@@ -26,14 +26,16 @@ namespace Infrastructure.Services
 
         public async Task AddFavorite(FavoriteRequestModel favoriteRequest)
         {
+            var movie = await _movieRepository.GetById(favoriteRequest.MovieId);
             var newFavorite = new Favorite
             {
                 Id = favoriteRequest.Id,
                 UserId = favoriteRequest.UserId,
                 MovieId = favoriteRequest.MovieId,
+                Movie = movie
             };
-            var user = await _userRepository.GetById(favoriteRequest.UserId);
-            user.Favorites.Add(newFavorite);
+            
+            await _userRepository.AddFavorite(newFavorite);
         }
         public async Task AddMovieReview(ReviewRequestModel reviewRequest)
         {
@@ -53,7 +55,7 @@ namespace Infrastructure.Services
         {
             var movies = await _movieRepository.GetById(movieId);
             var reviewedMovie = movies.Reviews.Where(x => x.UserId == userId);
-            reviewedMovie.ToList().RemoveAt(0);
+            
 
         }
 
@@ -68,28 +70,36 @@ namespace Infrastructure.Services
             var favs = await _userRepository.GetFavoritesOfUser(id);
 
             var favoriteresponse = new FavoriteResponseModel();
+            favoriteresponse.UserId = id;
+            var cards = new List<FavoriteMovieResponseModel>();
             foreach (var fav in favs)
             {
-                favoriteresponse.UserId = id;
-                favoriteresponse.FavoriteMovies.Add(new FavoriteMovieResponseModel { Id = fav.MovieId, Title = fav.Movie.Title, PosterUrl = fav.Movie.PosterUrl, ReleaseDate = fav.Movie.ReleaseDate.Value });
+                cards.Add(new FavoriteMovieResponseModel { Id = fav.Movie.Id, Title = fav.Movie.Title, PosterUrl = fav.Movie.PosterUrl, ReleaseDate = fav.Movie.ReleaseDate.Value });
             }
+            favoriteresponse.FavoriteMovies = cards;
             return favoriteresponse;
         }
 
         public async Task<PurchaseResponseModel> GetAllPurchasesForUser(int id)
         {
-            var mypurchases = await _purchaseRepository.GetPurchasesOfUser(id);
+            var mypurchases = await _purchaseRepository.GetByUserId(id);
             var purchaseresponse = new PurchaseResponseModel();
             purchaseresponse.UserId = id;
+            var cards = new List<MovieCardResponseModel>();
             foreach (var thepurchase in mypurchases)
-            {
-                purchaseresponse.PurchasedMovies.Add(new MovieCardResponseModel { Id = thepurchase.Movie.Id, Title = thepurchase.Movie.Title, PosterUrl = thepurchase.Movie.PosterUrl });
+            {             
+                cards.Add(new MovieCardResponseModel {Id = thepurchase.Movie.Id, Title = thepurchase.Movie.Title, PosterUrl = thepurchase.Movie.PosterUrl, ReleaseDate = thepurchase.Movie.ReleaseDate.Value });
             }
+            purchaseresponse.PurchasedMovies = cards;
+        
+
+            purchaseresponse.TotalMoviesPurchased = purchaseresponse.PurchasedMovies.Count;
             return purchaseresponse;
         }
 
         public async Task<UserReviewResponseModel> GetAllReviewsByUser(int id)
         {
+            await _userRepository.GetReviewsOfUser(id);
             var myUser = await _userRepository.GetById(id);
             /*var reviewlist = myUser.Reviews.ToList();*/
             var reviewlist = myUser.Reviews;
@@ -133,17 +143,8 @@ namespace Infrastructure.Services
 
         public async Task<bool> IsMoviePurchased(PurchaseRequestModel purchaseRequest, int userId)
         {
-            var y = await _purchaseRepository.GetPurchasesOfUser(userId);
-            foreach(var t in y)
-            {
-                t.UserId = userId;
-/*                t.Id = purchaseRequest.Id;
-                t.UserId = userId;
-                t.PurchaseNumber = purchaseRequest.PurchaseNumber;
-                t.TotalPrice = purchaseRequest.TotalPrice;
-                t.PurchaseDateTime = purchaseRequest.PurchaseDateTime;
-                t.MovieId = purchaseRequest.MovieId;*/
-            }
+            var y = await _purchaseRepository.GetByUserId(userId);
+            
             var purchases = await _purchaseRepository.GetByUserId(userId);
             foreach (var purchase in purchases)
             {
@@ -159,8 +160,6 @@ namespace Infrastructure.Services
         public async Task<bool> PurchaseMovie(PurchaseRequestModel purchaseRequest, int userId)
         {
             var movieprice = await _userRepository.GetPriceDetails(purchaseRequest.MovieId);
-    /*        var newId = await _purchaseRepository.GetNumberOfPurchases();
-            newId = newId + 1;*/
             var newPurchase = new Purchase
             {
                 MovieId = purchaseRequest.MovieId,

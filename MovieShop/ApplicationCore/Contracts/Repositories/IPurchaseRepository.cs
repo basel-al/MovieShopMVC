@@ -12,7 +12,5 @@ namespace ApplicationCore.Contracts.Repositories
     {
         Task<List<Purchase>> GetByUserId(int userId);
         Task AddPurchase(PurchaseRequestModel purchase);
-        Task<List<Purchase>> GetPurchasesOfUser(int userId);
-        Task<int> GetNumberOfPurchases();
     }
 }
