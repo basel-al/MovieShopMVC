@@ -58,7 +58,6 @@ namespace Infrastructure.Services
             
 
         }
-
         public async Task<bool> FavoriteExists(int id, int movieId)
         {
             var purchases = await _movieRepository.GetById(movieId);
@@ -79,7 +78,6 @@ namespace Infrastructure.Services
             favoriteresponse.FavoriteMovies = cards;
             return favoriteresponse;
         }
-
         public async Task<PurchaseResponseModel> GetAllPurchasesForUser(int id)
         {
             var mypurchases = await _purchaseRepository.GetByUserId(id);
