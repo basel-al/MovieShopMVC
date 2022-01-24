@@ -29,10 +29,8 @@ namespace Infrastructure.Services
             var movie = await _movieRepository.GetById(favoriteRequest.MovieId);
             var newFavorite = new Favorite
             {
-                Id = favoriteRequest.Id,
                 UserId = favoriteRequest.UserId,
                 MovieId = favoriteRequest.MovieId,
-                Movie = movie
             };
             
             await _userRepository.AddFavorite(newFavorite);
@@ -99,20 +97,16 @@ namespace Infrastructure.Services
 
         public async Task<UserReviewResponseModel> GetAllReviewsByUser(int id)
         {
-            await _userRepository.GetReviewsOfUser(id);
-            var myUser = await _userRepository.GetById(id);
-            /*var reviewlist = myUser.Reviews.ToList();*/
-            var reviewlist = myUser.Reviews;
+            var reviewlist = await _userRepository.GetReviewsOfUser(id);
+            var revieweresponse = new UserReviewResponseModel();
+            revieweresponse.UserId = id;
             var MovieReviewsList = new List <MovieReviewResponseModel>();
             foreach (var review in reviewlist)
             {
-                MovieReviewsList.Add(new MovieReviewResponseModel { UserId = review.UserId, MovieId = review.MovieId, ReviewText = review.ReviewText, Rating = review.Rating , Name= review.Movie.Title});
+                MovieReviewsList.Add(new MovieReviewResponseModel { UserId = id, MovieId = review.MovieId, ReviewText = review.ReviewText, Rating = review.Rating , Name= review.Movie.Title});
             }
-            return new UserReviewResponseModel
-            {
-                UserId=id,
-                MovieReviews= MovieReviewsList
-            };
+            revieweresponse.MovieReviews=MovieReviewsList;
+            return revieweresponse;
         }
 
         public async Task<PurchaseDetailsResponseModel> GetPurchasesDetails(int userId, int movieId)

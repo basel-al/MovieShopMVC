@@ -11,5 +11,6 @@ namespace ApplicationCore.Contracts.Repositories
     {
         Task<List<Movie>> Get30HighestGrossingMovies();
         Task<decimal> GetMovieRating(int id);
+        Task AddMovie(Movie movie);
     }
 }

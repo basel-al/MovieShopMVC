@@ -23,7 +23,6 @@ namespace MovieShopMVC.Controllers
             var MyPurchases = await _userService.GetAllPurchasesForUser(userId);
             return View(MyPurchases);
         }
-        [Authorize]
         [HttpGet]
         public async Task<IActionResult> Favorites()
         {
@@ -31,25 +30,29 @@ namespace MovieShopMVC.Controllers
             var myFavorites = await _userService.GetAllFavoritesForUser(userId);
             return View(myFavorites);
         }
-        public Task<IActionResult> Profile()
+        [HttpGet]
+        public async Task<IActionResult> Reviews()
         {
-            return null;
+            var userId = Convert.ToInt32(HttpContext?.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value);
+            var myReviews = await _userService.GetAllReviewsByUser(userId);
+            return View(myReviews);
+        }
+        [HttpGet]
+        public async Task<IActionResult> Profile()
+        {
+            return View();
 
         }
-        public Task<IActionResult> EditProfile()
+        [HttpGet]
+        public async Task<IActionResult> EditProfile()
         {
-            return null;
+            return View();
 
         }
         [HttpPost]
-        public async Task<IActionResult> BuyForUser(int UserId, int MovieId)
+        public async Task<IActionResult> BuyForUser(PurchaseRequestModel model)
         {
-            var request = new PurchaseRequestModel
-            {
-                UserId = UserId,
-                MovieId = MovieId,
-            };
-            var x = await _userService.PurchaseMovie(request, UserId);
+            var x = await _userService.PurchaseMovie(model, model.UserId);
             return LocalRedirect("~/");
         }
         [HttpPost]
@@ -65,6 +68,12 @@ namespace MovieShopMVC.Controllers
 
             await _userService.AddFavorite(model);
             return LocalRedirect("~/");
+        }
+        [HttpGet]
+        public async Task<bool> CheckPurchase(PurchaseRequestModel model)
+        {
+            var b = await _userService.IsMoviePurchased(model, model.UserId);
+            return b;
         }
     }
     

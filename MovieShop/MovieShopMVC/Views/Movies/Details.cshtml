@@ -2,6 +2,7 @@
 
 @model ApplicationCore.Models.MovieDetailsResponseModel
 @using MovieShopMVC.Helpers
+@using System.Security.Claims;
 @inject ICurrentLoginUserService _currentUser
 <div class="container-fluid">
    <div class="row position-relative" style="background:linear-gradient( rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8) ),url(@Model.BackdropUrl) center no-repeat;">
@@ -26,18 +27,17 @@
       <div class="col-3 mt-5">
          <div class= "container btn-group">
             <div class="row">
-                <div class="col">
-                <form asp-controller="User" asp-action="FavoriteByUser" method="post">
-                              <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                              <div class="form-group">
-                                 <input name= "UserId" type="hidden" value=@_currentUser.UserId />
-                                 <input name= "MovieId" type="hidden" value=@Model.Id />
-                              </div>
-                              <input type="submit" class="btn btn-primary float-end p-2 mb-3" value="Favorite This"/>                              
-                           </form>
-                           </div>
-                           <div class="w-100"></div>
-
+               <div class="col">
+                  <form asp-controller="User" asp-action="FavoriteByUser" method="post">
+                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                     <div class="form-group">
+                        <input name= "UserId" type="hidden" value=@_currentUser.UserId />
+                        <input name= "MovieId" type="hidden" value=@Model.Id />
+                     </div>
+                     <input type="submit" class="btn btn-primary float-end p-2 mb-3" value="Favorite This"/>                              
+                  </form>
+               </div>
+               <div class="w-100"></div>
                <div class="col">
                   <button type="button" class="btn btn-primary float-end p-2 mb-3" style="border:1px solid white; background-color: transparent;" data-bs-toggle="modal" data-bs-target="#reviewModal">✎ REVIEW</button>
                </div>
@@ -50,7 +50,7 @@
                         </div>
                         <div class="modal-body">
                            <form asp-controller="User" asp-action="ReviewByUser" method="post">
-                                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                              <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                               <select name="Rating" class="form-select" aria-label="rating">
                                  <option>Select Rating</option>
                                  <option value="1">1</option>
@@ -64,13 +64,12 @@
                                  <option value="9">9</option>
                                  <option value="10">10</option>
                               </select>
-
                               <div class="mb-3">
-                                   <label for="message-text" class="col-form-label">Review:</label>
-                                  <div class="form-group">                              
-                                 <textarea name = "ReviewText" class="form-control" id="message-text"></textarea>
-                                 <input name= "UserId" type="hidden" value=@_currentUser.UserId />
-                                 <input name= "MovieId" type="hidden" value=@Model.Id />
+                                 <label for="message-text" class="col-form-label">Review:</label>
+                                 <div class="form-group">                              
+                                    <textarea name = "ReviewText" class="form-control" id="message-text"></textarea>
+                                    <input name= "UserId" type="hidden" value=@_currentUser.UserId />
+                                    <input name= "MovieId" type="hidden" value=@Model.Id />
                                  </div>
                               </div>
                               <div class="modal-footer">
@@ -83,6 +82,12 @@
                   </div>
                </div>
                <div class="col">
+                     <form asp-controller="User" asp-action="CheckPurchase" method="post">
+                                 <input name= "UserId" type="hidden" value=@_currentUser.UserId />
+                                 <input name= "MovieId" type="hidden" value=@Model.Id />
+                         </form>
+
+
                   <button type="button" class="btn btn-light float-end" data-bs-toggle="modal" data-bs-target="#purchaseModal">BUY $@Model.Price</button>
                </div>
                <div class="modal" id="purchaseModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true" >
@@ -122,11 +127,6 @@
             <li class="list-group-item bg-transparent">Budget  <span class="badge rounded-pill bg-secondary">@string.Format("{0:C0}",Model.Budget)</span></li>
             <li class="list-group-item bg-transparent"><a href= @Model.ImdbUrl class="text-decoration-none text-reset"> IMDb</a> </li>
          </ul>
-
-           
-
-
-
          <h4>TRAILERS</h4>
          <ul class="list-group list-group-flush">
             @foreach(var trailer in Model.Trailers)

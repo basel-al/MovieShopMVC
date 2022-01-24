@@ -59,9 +59,11 @@ namespace MovieShopMVC.Controllers
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
             return LocalRedirect("~/");
         }
+        [HttpPost]
         public async Task<IActionResult> Logout()
         {
-          throw new NotImplementedException();
+          await HttpContext.SignOutAsync();
+            return LocalRedirect("~/");
         }
     }
 }

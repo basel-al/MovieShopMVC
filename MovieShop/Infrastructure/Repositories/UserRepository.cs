@@ -34,29 +34,31 @@ namespace Infrastructure.Repositories
             var favs = await _dbContext.Favorites.Where(x => x.UserId == userId).Include(m => m.Movie).ToListAsync();
             return favs;
         }
-        public async Task DeleteFavorite(int movieId, int userId)
+        public async Task DeleteFavorite(int userId, int movieId)
         {
 
-            await _dbContext.Favorites.Where(u => u.UserId == userId && u.MovieId == movieId).SingleOrDefaultAsync();
+            var fav = await _dbContext.Favorites.Where(u => u.UserId == userId && u.MovieId == movieId).SingleOrDefaultAsync();
+            _dbContext.Favorites.Remove(fav);
             await _dbContext.SaveChangesAsync();
 
         }
-        public async Task DeleteReview(int movieId, int userId)
+        public async Task DeleteReview(int userId, int movieId)
         {
-            await _dbContext.Reviews.Where(u => u.UserId == userId && u.MovieId == movieId).SingleOrDefaultAsync();
+
+            var rev = await _dbContext.Reviews.Where(u => u.UserId == userId && u.MovieId == movieId).SingleOrDefaultAsync();
+            _dbContext.Reviews.Remove(rev);
             await _dbContext.SaveChangesAsync();
 
         }
         public async Task<decimal> GetPriceDetails(int theid)
         {
-            //get movie price where movieid = id
             var movie = await _dbContext.Movies.FirstOrDefaultAsync(x => x.Id == theid);
             return movie.Price.GetValueOrDefault();
 
         }
         public async Task<List<Review>> GetReviewsOfUser(int userId)
         {
-            var reviews = await _dbContext.Reviews.Where(x => x.UserId == userId).ToListAsync();
+            var reviews = await _dbContext.Reviews.Where(x => x.UserId == userId).Include(x=>x.Movie).ToListAsync();
             return reviews;
 
         }
@@ -72,7 +74,7 @@ namespace Infrastructure.Repositories
             _dbContext.SaveChangesAsync();
 
         }
-        public async Task<Favorite> GetFavoriteByMovieUserId(int movieId, int userId)
+        public async Task<Favorite> GetFavoriteByMovieUserId(int userId, int movieId)
         {
             var favorite = await _dbContext.Favorites.Where(x => x.UserId == userId).Include(x => x.MovieId == movieId).FirstOrDefaultAsync();
             return favorite;

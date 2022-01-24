@@ -12,14 +12,14 @@ namespace ApplicationCore.Contracts.Repositories
     {
         Task<User> GetUserByEmail(string email);
         Task<List<Favorite>> GetFavoritesOfUser(int userId);
-        Task DeleteFavorite(int movieId, int userId);
+        Task DeleteFavorite(int userId, int movieId);
         Task<decimal> GetPriceDetails(int theid);
         Task<List<Review>> GetReviewsOfUser(int userId);
 /*        Task AddReviewForUser(ReviewRequestModel model);*/
         Task AddReview(Review review);
         Task AddFavorite(Favorite favorite);
         Task<Purchase> GetPurchaseByMovieUserId(int userId, int movieId);
-        Task<Favorite> GetFavoriteByMovieUserId(int movieId, int userId);
+        Task<Favorite> GetFavoriteByMovieUserId(int userId, int movieId);
         Task DeleteReview(int userId, int movieId);
         Task<Review> UpdateReview(int userId, int movieId, decimal rating, string reviewtext);
         

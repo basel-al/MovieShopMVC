@@ -45,13 +45,12 @@ namespace Infrastructure.Services
             }
             return false;
         }
-
         public async Task<UserLoginResponseModel> Validate(string email, string password)
         {
             var user = await _userRepository.GetUserByEmail(email);
             if (user == null)
             {
-                throw new Exception("Email does not exist");
+                return null;
             }
             var hashedPassword = GetHashedPassword(password, user.Salt);
             if (hashedPassword == user.HashedPassword)
@@ -91,6 +90,7 @@ namespace Infrastructure.Services
             return hashed;
 
         }
+
     }
 }
 
