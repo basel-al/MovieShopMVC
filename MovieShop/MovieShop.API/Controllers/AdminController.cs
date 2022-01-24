@@ -21,6 +21,13 @@ namespace MovieShop.API.Controllers
             await _adminService.AddMovie(request);
             return Ok();
         }
+        [HttpPut]
+        [Route("movie")]
+        public async Task<IActionResult> ChangingMovie(MovieCreateRequest request)
+        {
+            await _adminService.ChangeMovie(request);
+            return Ok();
+        }
     }
 }
     

@@ -7,10 +7,12 @@ using System.Threading.Tasks;
 
 namespace ApplicationCore.Contracts.Repositories
 {
-    public interface IMovieRepository: IRepository<Movie>
+    public interface IMovieRepository : IRepository<Movie>
     {
         Task<List<Movie>> Get30HighestGrossingMovies();
+        Task<List<Movie>> Get30HighestRatedMovies();
         Task<decimal> GetMovieRating(int id);
         Task AddMovie(Movie movie);
+        Task<List<Movie>> GetMoviesOfGenre(int genreId);
     }
 }

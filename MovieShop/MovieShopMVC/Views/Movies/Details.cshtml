@@ -17,7 +17,7 @@
             <div class="float-end">
                @foreach(var genre in Model.Genres)
                {
-               <span style ="display: inline-block" class="badge bg-secondary">@genre.Name</span>
+               <a asp-controller="Movies" asp-action="genres" asp-route-id="@genre.Id" style ="display: inline-block ; text-decoration: none" class="badge bg-secondary">@genre.Name</a>
                } 
             </div>
          </div>

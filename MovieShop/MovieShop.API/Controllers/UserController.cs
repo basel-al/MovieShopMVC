@@ -45,11 +45,19 @@ namespace MovieShop.API.Controllers
             await _userService.AddMovieReview(model);
             return Ok();
         }
-        [HttpGet]
-        [Route("purchases")]
-        public async Task<IActionResult> Purchases(int userId)
+        [HttpPut]
+        [Route("review")]
+        public async Task<IActionResult> ModifyReview(ReviewRequestModel model)
         {
-            var MyPurchases = await _userService.GetAllPurchasesForUser(userId);
+
+            await _userService.UpdateMovieReview(model);
+            return Ok();
+        }
+        [HttpGet]
+        [Route("{id:int}/purchases")]
+        public async Task<IActionResult> Purchases(int id)
+        {
+            var MyPurchases = await _userService.GetAllPurchasesForUser(id);
             if(MyPurchases == null)
             {
                 return NotFound();
@@ -57,10 +65,10 @@ namespace MovieShop.API.Controllers
             return Ok(MyPurchases);
         }
         [HttpGet]
-        [Route("{favorites}")]
-        public async Task<IActionResult> Favorites(int userId)
+        [Route("{id:int}/favorites")]
+        public async Task<IActionResult> Favorites(int id)
         {
-            var MyFavorites = await _userService.GetAllFavoritesForUser(userId);
+            var MyFavorites = await _userService.GetAllFavoritesForUser(id);
             if (MyFavorites == null)
             {
                 return NotFound();
@@ -69,10 +77,10 @@ namespace MovieShop.API.Controllers
         }
 
         [HttpGet]
-        [Route("reviews")]
-        public async Task<IActionResult> Reviews(int userId)
+        [Route("{id:int}/reviews")]
+        public async Task<IActionResult> Reviews(int id)
         {
-            var MyReviews = await _userService.GetAllReviewsByUser(userId);
+            var MyReviews = await _userService.GetAllReviewsByUser(id);
             if (MyReviews == null)
             {
                 return NotFound();

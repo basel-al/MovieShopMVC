@@ -25,17 +25,21 @@ namespace Infrastructure.Services
                 Tagline = request.Tagline,
                 Budget = request.Budget,
                 Revenue = request.Revenue,
-                ImdbUrl=request.ImdbUrl,
-                TmdbUrl=request.TmdbUrl,
-                PosterUrl=request.PosterUrl,
-                BackdropUrl=request.BackdropUrl,    
-                OriginalLanguage=request.OriginalLanguage, 
-                ReleaseDate=request.ReleaseDate,
-                RunTime=request.RunTime,
+                ImdbUrl = request.ImdbUrl,
+                TmdbUrl = request.TmdbUrl,
+                PosterUrl = request.PosterUrl,
+                BackdropUrl = request.BackdropUrl,
+                OriginalLanguage = request.OriginalLanguage,
+                ReleaseDate = request.ReleaseDate,
+                RunTime = request.RunTime,
 
             };
             await _movieRepository.AddMovie(movie);
 
+        }
+        public async Task ChangeMovie(MovieCreateRequest request)
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -10,5 +10,7 @@ namespace ApplicationCore.Contracts.Services
     public interface IAdminService
     {
         Task AddMovie(MovieCreateRequest request);
+        Task ChangeMovie(MovieCreateRequest request);
+
     }
 }
