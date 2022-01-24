@@ -1,6 +1,7 @@
 ﻿
 using ApplicationCore.Contracts.Repositories;
 using ApplicationCore.Contracts.Services;
+using ApplicationCore.Entities;
 using ApplicationCore.Models;
 
 
@@ -86,6 +87,16 @@ namespace Infrastructure.Services
                 movieCards.Add(new MovieCardResponseModel { Id = movie.Id, Title = movie.Title, PosterUrl = movie.PosterUrl });
             }
             return movieCards;
+        }
+        public async Task<List<MovieReviewResponseModel>> GetAllReviewsForMovie(int id)
+        {
+            var reviewlist = await _movieRepository.GetReviewsOfMovie(id);
+            var revresponse = new List<MovieReviewResponseModel>();
+            foreach (var review in reviewlist)
+            {
+                revresponse.Add(new MovieReviewResponseModel{ UserId = review.UserId, MovieId = review.MovieId, Rating = review.Rating, ReviewText = review.ReviewText});
+            }
+            return revresponse;
         }
 
 

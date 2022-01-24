@@ -1,4 +1,5 @@
-﻿using ApplicationCore.Models;
+﻿using ApplicationCore.Entities;
+using ApplicationCore.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,6 @@ namespace ApplicationCore.Contracts.Services
         Task<List<MovieCardResponseModel>> GetTop30RatedMovies();
         Task<MovieDetailsResponseModel> GetMovieDetails(int id);
         Task<List<MovieCardResponseModel>> GetMoviesForGenre(int genreId);
-
+        Task<List<MovieReviewResponseModel>> GetAllReviewsForMovie(int id);
     }
 }

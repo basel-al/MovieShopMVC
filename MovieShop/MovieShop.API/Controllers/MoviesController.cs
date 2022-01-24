@@ -58,6 +58,17 @@ namespace MovieShop.API.Controllers
             }
             return Ok(movies);
         }
+        [HttpGet]
+        [Route("{id}/reviews")]
+        public async Task<IActionResult> GetReviews(int id)
+        {
+            var reviews = await _movieService.GetAllReviewsForMovie(id);
+            if (!reviews.Any())
+            {
+                return NotFound();
+            }
+            return Ok(reviews);
+        }
 
 
     }

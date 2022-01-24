@@ -14,5 +14,6 @@ namespace ApplicationCore.Contracts.Repositories
         Task<decimal> GetMovieRating(int id);
         Task AddMovie(Movie movie);
         Task<List<Movie>> GetMoviesOfGenre(int genreId);
+        Task<List<Review>> GetReviewsOfMovie(int movieId);
     }
 }

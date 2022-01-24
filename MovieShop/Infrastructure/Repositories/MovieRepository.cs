@@ -72,6 +72,12 @@ namespace Infrastructure.Repositories
             return movies;
 
         }
+        public async Task<List<Review>> GetReviewsOfMovie(int movieId)
+        {
+            var reviews = await _dbContext.Reviews.Include(x => x.Movie).Where(x => x.MovieId == movieId).ToListAsync();
+            return reviews;
+
+        }
 
     }
 }

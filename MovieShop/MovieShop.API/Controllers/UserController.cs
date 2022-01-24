@@ -96,12 +96,12 @@ namespace MovieShop.API.Controllers
             return Ok(details);
         }*/
 
-        [HttpPost]
+/*        [HttpPost]
         [Route("DeleteReview")]
         public async Task<IActionResult> RemoveReview(int userId, int movieId)
         {
             await _userService.DeleteMovieReview(userId, movieId);
             return Ok();
-        }
+        }*/
     }
 }
