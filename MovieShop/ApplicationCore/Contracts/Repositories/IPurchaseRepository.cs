@@ -12,5 +12,6 @@ namespace ApplicationCore.Contracts.Repositories
     {
         Task<List<Purchase>> GetByUserId(int userId);
         Task<int> GetNumberOfPurchases();
+        Task<List<Purchase>> GetPurchasesinRange(DateTime x, DateTime y);
     }
 }

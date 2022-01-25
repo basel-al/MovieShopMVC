@@ -16,6 +16,33 @@ namespace MovieShop.API.Controllers
             _accountService = accountService;
         }
         [HttpPost]
+        [Route("register")]
+        public async Task<IActionResult> Register(UserRegisterRequestModel model)
+        {
+            try
+            {
+                var user = await _accountService.Register(model);
+                return Ok(user);
+            }
+            catch (Exception ex)
+            {
+                return Unauthorized("Email already taken");
+            }
+
+        }
+        [HttpGet]
+        [Route("check-email")]
+        public async Task<IActionResult> VerifyEmail(string email)
+        {
+            var user = await _accountService.emailExists(email);
+            if (user == true)
+            {
+                return Ok();
+            }
+            return Unauthorized("Email does not exist");
+
+        }
+        [HttpPost]
         [Route("login")]
         public async Task<IActionResult> Login([FromBody] LoginRequestModel model)
         {
@@ -26,6 +53,7 @@ namespace MovieShop.API.Controllers
             }
             return Ok(user);
         }
+
 
     }
 }

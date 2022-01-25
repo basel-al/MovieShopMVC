@@ -28,6 +28,13 @@ namespace MovieShop.API.Controllers
             await _adminService.ChangeMovie(request);
             return Ok();
         }
+        [HttpGet]
+        [Route("top-purchased-movies")]
+        public async Task<IActionResult> TopPurchases(DateTime x, DateTime y)
+        {
+            var b = await _adminService.TopPurchasesedMovies(x, y);
+            return Ok(b);
+        }
     }
 }
     

@@ -163,6 +163,11 @@ namespace Infrastructure.Services
             await _userRepository.UpdateReview(reviewRequest.UserId, reviewRequest.MovieId, reviewRequest.Rating, reviewRequest.ReviewText);
 
         }
+        public async Task<User> GetUser(int id)
+        {
+            var u = await _userRepository.GetUser(id);
+            return u;
+        }
     }
 }
 

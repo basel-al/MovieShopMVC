@@ -24,9 +24,12 @@ namespace Infrastructure.Repositories
 
         public async Task<User> GetUserByEmail(string email)
         {
-            //CHECK THIS
-            //var user = _dbContext.User.FirstOrDefault(x => x.Email == email);
             var user = await _dbContext.Users.FirstOrDefaultAsync(x => x.Email == email);
+            return user;
+        }
+        public async Task<User> GetUser(int id)
+        {
+            var user = await _dbContext.Users.FirstOrDefaultAsync(x => x.Id==id);
             return user;
         }
         public async Task<List<Favorite>> GetFavoritesOfUser(int userId)
@@ -101,5 +104,16 @@ namespace Infrastructure.Repositories
             var purchaseDetail = await _dbContext.Purchases.Where(u => u.UserId == userId && u.MovieId == movieId).SingleOrDefaultAsync();
             return purchaseDetail;
         }
+        public async Task<bool> VerifyEmail(string email)
+        {
+
+            var ver = await _dbContext.Users.Where(u => u.Email == email).SingleOrDefaultAsync();
+            if(ver != null)
+            {
+                return true;
+            }
+            return false;
+        }
+
     }
 }

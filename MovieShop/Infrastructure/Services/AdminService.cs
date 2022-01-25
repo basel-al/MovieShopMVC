@@ -11,10 +11,12 @@ namespace Infrastructure.Services
 {
     public class AdminService
     {
-        private IMovieRepository _movieRepository;
-        public AdminService(IMovieRepository movieRepository)
+        private readonly IMovieRepository _movieRepository;
+        private readonly IPurchaseRepository _purchaseRepository;
+        public AdminService(IMovieRepository movieRepository, IPurchaseRepository purchaseRepository)
         {
             _movieRepository = movieRepository;
+            _purchaseRepository = purchaseRepository;
         }
         public async Task AddMovie(MovieCreateRequest request)
         {
@@ -40,6 +42,12 @@ namespace Infrastructure.Services
         public async Task ChangeMovie(MovieCreateRequest request)
         {
             throw new NotImplementedException();
+        }
+        public async Task<List<Purchase>> TopPurchasesedMovies(DateTime x, DateTime y)
+        {
+            var xz = await _purchaseRepository.GetPurchasesinRange(x, y);
+            return xz;
+            
         }
     }
 }

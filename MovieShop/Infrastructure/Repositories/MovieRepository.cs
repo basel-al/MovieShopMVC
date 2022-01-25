@@ -51,19 +51,20 @@ namespace Infrastructure.Repositories
         }
         public async Task ChangeMovie(Movie movie)
         {
-            /*            {
-                            var review = await _dbContext.Reviews.Where(u => u.UserId == req. && u.MovieId == movieId).SingleOrDefaultAsync();
-                            if (review != null)
-                            {
-                                review.Rating = rating;
-                                review.ReviewText = reviewtext;
-                                await _dbContext.SaveChangesAsync();
-                                return review;
-                            }
+            var newmovie = await _dbContext.Movies.Where(x => x.Id == movie.Id).SingleOrDefaultAsync();
+            if (movie.Title != null) newmovie.Title = movie.Title;
+            if (movie.Overview != null) newmovie.Overview = movie.Overview;
+            if (movie.Tagline != null) newmovie.Tagline = movie.Tagline;
+            if (movie.Revenue!= null) newmovie.Revenue= movie.Revenue;
+            if (movie.Budget != null) newmovie.Budget = movie.Budget;
+            if (movie.ImdbUrl != null) newmovie.ImdbUrl = movie.ImdbUrl;
+            if (movie.TmdbUrl != null) newmovie.TmdbUrl = newmovie.TmdbUrl;
+            if (movie.PosterUrl != null) newmovie.PosterUrl = newmovie.PosterUrl;
+            if (movie.BackdropUrl!= null) newmovie.BackdropUrl = newmovie.BackdropUrl;
+            if (movie.OriginalLanguage != null) newmovie.OriginalLanguage = newmovie.OriginalLanguage;
+            if (movie.RunTime != null) newmovie.RunTime = newmovie.RunTime;
+            newmovie.UpdatedDate = DateTime.Now;
 
-
-                        }*/
-            throw new NotImplementedException();
 
         }
         public async Task<List<Movie>> GetMoviesOfGenre(int genreId)

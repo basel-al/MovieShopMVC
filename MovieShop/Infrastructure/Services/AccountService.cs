@@ -68,6 +68,10 @@ namespace Infrastructure.Services
             }
             return null;
         }
+        public async Task<bool> emailExists(string email)
+        {
+            return await _userRepository.VerifyEmail(email);
+        }
 
         private string GetRandomSalt()
         {

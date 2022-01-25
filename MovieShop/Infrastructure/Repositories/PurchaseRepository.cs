@@ -30,6 +30,13 @@ namespace Infrastructure.Repositories
             var num = await _dbContext.Purchases.CountAsync();
             return num;
         }
+        public async Task<List<Purchase>> GetPurchasesinRange(DateTime x, DateTime y)
+        {
+            var toppurchases = await _dbContext.Purchases.Where(p => p.PurchaseDateTime > x && p.PurchaseDateTime < y).Include(m => m.Movie).ToListAsync();
+            return toppurchases;
+            
+
+        }
 
 
 

@@ -1,4 +1,5 @@
-﻿using ApplicationCore.Models;
+﻿using ApplicationCore.Entities;
+using ApplicationCore.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +12,7 @@ namespace ApplicationCore.Contracts.Services
     {
         Task AddMovie(MovieCreateRequest request);
         Task ChangeMovie(MovieCreateRequest request);
+        Task<List<Purchase>> TopPurchasesedMovies(DateTime x, DateTime y);
 
     }
 }
