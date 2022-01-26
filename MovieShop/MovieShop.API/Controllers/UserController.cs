@@ -93,6 +93,10 @@ namespace MovieShop.API.Controllers
         {
 
             var details = await _userService.GetPurchasesDetails(userId, movieId);
+            if (details == null)
+            {
+                return NotFound();
+            }
             return Ok(details);
         }
         [HttpGet]
