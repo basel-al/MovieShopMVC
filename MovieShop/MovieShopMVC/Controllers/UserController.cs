@@ -52,7 +52,8 @@ namespace MovieShopMVC.Controllers
         [HttpPost]
         public async Task<IActionResult> BuyForUser(PurchaseRequestModel model)
         {
-            var x = await _userService.PurchaseMovie(model, model.UserId);
+            var userId = Convert.ToInt32(HttpContext?.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value);
+            var x = await _userService.PurchaseMovie(model,userId);
             return LocalRedirect("~/");
         }
         [HttpPost]
@@ -72,7 +73,8 @@ namespace MovieShopMVC.Controllers
         [HttpGet]
         public async Task<bool> CheckPurchase(PurchaseRequestModel model)
         {
-            var b = await _userService.IsMoviePurchased(model, model.UserId);
+            var userId = Convert.ToInt32(HttpContext?.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value);
+            var b = await _userService.IsMoviePurchased(model, userId);
             return b;
         }
     }
