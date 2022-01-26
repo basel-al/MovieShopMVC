@@ -26,8 +26,29 @@ namespace Infrastructure.Repositories
         }
         public async Task<List<Movie>> Get30HighestRatedMovies()
         {
-            var movies = await _dbContext.Movies.OrderByDescending(x => this.GetMovieRating(x.Id)).Take(30).ToListAsync();
+                       var movies = await _dbContext.Movies.OrderByDescending(x => this.GetMovieRating(x.Id)).Take(30).ToListAsync();
             return movies;
+/*                        var x = (from rev in _dbContext.Reviews.Include(m=>m.Movie)
+                                group rev by rev.Movie into y
+                                 orderby y.Average(x => x.Rating) descending
+                                 select new
+                                 {
+                                     MovId = y.Key,                       
+                                     AvgRating = y.Average(x => x.Rating),
+                                 }).Take(30);*/
+
+/*            with reports(Id, Rating)
+            as
+             (
+            select Review.MovieId,avg(Review.Rating) from Review
+            group by Review.MovieId
+            )
+            select* from Movie
+            join reports on Movie.Id = reports.Id
+            order by reports.Rating desc
+*/
+
+
 
         }
         public override async Task<Movie> GetById(int id)
@@ -43,6 +64,8 @@ namespace Infrastructure.Repositories
         {
             var movieRating = await _dbContext.Reviews.Where(r => r.MovieId == id).DefaultIfEmpty().AverageAsync(r => r == null ? 0 : r.Rating);
             return movieRating;
+
+            
         }
         public async Task AddMovie(Movie movie)
         {
@@ -79,6 +102,7 @@ namespace Infrastructure.Repositories
             return reviews;
 
         }
+
 
     }
 }

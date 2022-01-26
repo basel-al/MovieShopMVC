@@ -1,4 +1,5 @@
 ﻿using ApplicationCore.Contracts.Repositories;
+using ApplicationCore.Contracts.Services;
 using ApplicationCore.Entities;
 using ApplicationCore.Models;
 using System;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Services
 {
-    public class AdminService
+    public class AdminService : IAdminService
     {
         private readonly IMovieRepository _movieRepository;
         private readonly IPurchaseRepository _purchaseRepository;

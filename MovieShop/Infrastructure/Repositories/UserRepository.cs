@@ -79,7 +79,7 @@ namespace Infrastructure.Repositories
         }
         public async Task<Favorite> GetFavoriteByMovieUserId(int userId, int movieId)
         {
-            var favorite = await _dbContext.Favorites.Where(x => x.UserId == userId).Include(x => x.MovieId == movieId).FirstOrDefaultAsync();
+            var favorite = await _dbContext.Favorites.Where(u => u.UserId == userId && u.MovieId == movieId).FirstOrDefaultAsync();
             return favorite;
         }
         public async Task<Review> UpdateReview(int userId, int movieId, decimal rating, string reviewtext)

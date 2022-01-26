@@ -27,7 +27,9 @@ namespace MovieShop.API.Controllers
         public async Task<IActionResult> BuyForUser(PurchaseRequestModel model, int userId)
         {
             var x = await _userService.PurchaseMovie(model, userId);
-            return Ok();
+            return Ok(x);
+
+
         }
         [HttpPost]
         [Route("favorite")]
@@ -46,10 +48,10 @@ namespace MovieShop.API.Controllers
         }
         [HttpGet]
         [Route("check-movie-favorite/")]
-        public async Task<IActionResult> CheckFavorite(FavoriteRequestModel model)
+        public async Task<IActionResult> CheckFavorite(int userId, int movieId)
         {
-            var f = await _userService.FavoriteExists(model.UserId, model.MovieId);
-            return Ok();
+             var f = await _userService.FavoriteExists(userId, movieId);
+             return Ok(f);
         }
         [HttpPost]
         [Route("add-review")]
@@ -95,7 +97,7 @@ namespace MovieShop.API.Controllers
         }
         [HttpGet]
         [Route("check-movie-purchased/{movieId:int}")]
-        public async Task<IActionResult> VerifyPurchase(int movieId, int userId, PurchaseRequestModel model)
+        public async Task<IActionResult> VerifyPurchase(PurchaseRequestModel model, int userId)
         {
             var details = await _userService.IsMoviePurchased(model, userId);
             return Ok(details);

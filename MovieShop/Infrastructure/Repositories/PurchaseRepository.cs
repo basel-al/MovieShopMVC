@@ -35,7 +35,6 @@ namespace Infrastructure.Repositories
             var toppurchases = await _dbContext.Purchases.Where(p => p.PurchaseDateTime > x && p.PurchaseDateTime < y).Include(m => m.Movie).ToListAsync();
             return toppurchases;
             
-
         }
 
 

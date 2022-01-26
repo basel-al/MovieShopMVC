@@ -30,11 +30,20 @@ namespace MovieShop.API.Controllers
         }
         [HttpGet]
         [Route("top-purchased-movies")]
-        public async Task<IActionResult> TopPurchases(DateTime x, DateTime y)
+        public async Task<IActionResult> TopPurchasesRange(DateTime x, DateTime y)
         {
+            
             var b = await _adminService.TopPurchasesedMovies(x, y);
             return Ok(b);
         }
+/*        [HttpGet]
+        [Route("top-purchased-movies")]
+        public async Task<IActionResult> TopPurchases()
+        {
+
+            var b = await _adminService.TopPurchasesedMovies(DateTime.Now.AddDays(-90), DateTime.Now);
+            return Ok(b);
+        }*/
     }
 }
     

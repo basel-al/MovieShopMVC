@@ -54,14 +54,14 @@ namespace Infrastructure.Services
             await _userRepository.DeleteReview(userId, movieId);
 
         }
-        public async Task<bool> FavoriteExists(int id, int movieId)
+        public async Task<bool> FavoriteExists(int userId, int movieId)
         {
-            var favorite = await _userRepository.GetFavoriteByMovieUserId(movieId, id);
-            if(favorite != null)
+            var favorite = await _userRepository.GetFavoriteByMovieUserId(userId, movieId);
+            if (favorite == null)
             {
-                return true;
+                return false;
             }
-            return false;
+            return true;
         }
 
         public async Task<FavoriteResponseModel> GetAllFavoritesForUser(int id)

@@ -20,6 +20,7 @@ namespace MovieShopMVC.Controllers
         public async Task<IActionResult> Index()
         {
             var movies = await _movieService.GetTop30GrossingMovies();
+            
             ViewBag.TotalMovies = movies.Count;
             return View(movies);
         }
