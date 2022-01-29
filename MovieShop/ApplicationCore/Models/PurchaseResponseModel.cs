@@ -10,7 +10,7 @@ namespace ApplicationCore.Models
     {
 
         public int UserId { get; set; }
-        public int TotalMoviesPurchased;
+        public int TotalMoviesPurchased { get; set; }
         public List<MovieCardResponseModel> PurchasedMovies { get; set; }
     }
 }

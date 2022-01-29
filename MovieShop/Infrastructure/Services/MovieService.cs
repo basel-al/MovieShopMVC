@@ -64,7 +64,7 @@ namespace Infrastructure.Services
             var movieCards = new List<MovieCardResponseModel>(); 
             foreach(var movie in movies)
             {
-                movieCards.Add(new MovieCardResponseModel { Id=movie.Id, Title=movie.Title, PosterUrl=movie.PosterUrl });
+                movieCards.Add(new MovieCardResponseModel { Id=movie.Id, Title=movie.Title, PosterUrl=movie.PosterUrl, ReleaseDate = movie.ReleaseDate.GetValueOrDefault() });
             }
             return movieCards;
         }
@@ -74,7 +74,7 @@ namespace Infrastructure.Services
             var movieCards = new List<MovieCardResponseModel>();
             foreach (var movie in movies)
             {
-                movieCards.Add(new MovieCardResponseModel { Id = movie.Id, Title = movie.Title, PosterUrl = movie.PosterUrl });
+                movieCards.Add(new MovieCardResponseModel { Id = movie.Id, Title = movie.Title, PosterUrl = movie.PosterUrl, ReleaseDate = movie.ReleaseDate.GetValueOrDefault()});
             }
             return movieCards;
         }

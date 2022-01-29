@@ -2,6 +2,10 @@
 using ApplicationCore.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 
 namespace MovieShop.API.Controllers
 {
@@ -10,10 +14,12 @@ namespace MovieShop.API.Controllers
     public class AccountController : ControllerBase
     {
         private readonly IAccountService _accountService;
+        private readonly IConfiguration _configuration;
 
-        public AccountController(IAccountService accountService)
+        public AccountController(IAccountService accountService, IConfiguration configuration)
         {
             _accountService = accountService;
+            _configuration = configuration;
         }
         [HttpPost]
         [Route("register")]
@@ -47,13 +53,47 @@ namespace MovieShop.API.Controllers
         public async Task<IActionResult> Login([FromBody] LoginRequestModel model)
         {
             var user = await _accountService.Validate(model.Email, model.Password);
-            if(user == null)
+            if (user == null)
             {
                 return Unauthorized("Wrong Email or Password");
             }
-            return Ok(user);
+            //generate jwt
+            /*var token = GenerateJWT(user);*/
+            var token = GenerateJWT(user);
+            return Ok(new { token = token });
         }
+        private string GenerateJWT(UserLoginResponseModel user)
+        {
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new Claim(JwtRegisteredClaimNames.GivenName, user.FirstName),
+                new Claim(JwtRegisteredClaimNames.FamilyName, user.LastName),             
+                new Claim(JwtRegisteredClaimNames.Birthdate, user.DateOfBirth.ToShortDateString()),
+                new Claim(JwtRegisteredClaimNames.Email, user.Email),
+                new Claim("language", "english")
+            };
+            var identityClaims = new ClaimsIdentity();
+            identityClaims.AddClaims(claims);
 
-
+            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["PrivateKey"]));
+            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256Signature);
+            var expiration = DateTime.UtcNow.AddHours(_configuration.GetValue<int>("ExpirationHours"));
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var tokenDetails = new SecurityTokenDescriptor
+            {
+                Subject = identityClaims,
+                Expires = expiration,
+                SigningCredentials = credentials,
+                Issuer = _configuration["Issue"],
+                Audience = _configuration["Audience"]
+            };
+            var encodedJwt = tokenHandler.CreateToken(tokenDetails);
+            return tokenHandler.WriteToken(encodedJwt);
+        }
     }
+
+
+
 }
+    
