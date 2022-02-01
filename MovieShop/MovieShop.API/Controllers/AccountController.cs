@@ -11,6 +11,7 @@ namespace MovieShop.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+
     public class AccountController : ControllerBase
     {
         private readonly IAccountService _accountService;
@@ -50,7 +51,7 @@ namespace MovieShop.API.Controllers
         }
         [HttpPost]
         [Route("login")]
-        public async Task<IActionResult> Login([FromBody] LoginRequestModel model)
+        public async Task<IActionResult> Login(LoginRequestModel model)
         {
             var user = await _accountService.Validate(model.Email, model.Password);
             if (user == null)

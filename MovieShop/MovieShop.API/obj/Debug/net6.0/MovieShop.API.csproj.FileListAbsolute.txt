@@ -62,3 +62,4 @@ C:\Users\Basel\Desktop\sepgithub\MovieShop\MovieShop.API\obj\Debug\net6.0\MovieS
 C:\Users\Basel\Desktop\sepgithub\MovieShop\MovieShop.API\obj\Debug\net6.0\ref\MovieShop.API.dll
 C:\Users\Basel\Desktop\sepgithub\MovieShop\MovieShop.API\obj\Debug\net6.0\MovieShop.API.pdb
 C:\Users\Basel\Desktop\sepgithub\MovieShop\MovieShop.API\obj\Debug\net6.0\MovieShop.API.genruntimeconfig.cache
+C:\Users\Basel\Desktop\sepgithub\MovieShop\MovieShop.API\bin\Debug\net6.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll

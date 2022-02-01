@@ -1,5 +1,7 @@
 ﻿using ApplicationCore.Contracts.Services;
 using ApplicationCore.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -8,6 +10,7 @@ namespace MovieShop.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme) ]
     public class UserController : ControllerBase
     {
         private readonly IUserService _userService;

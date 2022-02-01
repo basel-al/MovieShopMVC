@@ -72,10 +72,10 @@ namespace Infrastructure.Services
         {
             var movies = await _movieRepository.Get30HighestRatedMovies();
             var movieCards = new List<MovieCardResponseModel>();
-            foreach (var movie in movies)
+/*            foreach (var movie in movies)
             {
                 movieCards.Add(new MovieCardResponseModel { Id = movie.Id, Title = movie.Title, PosterUrl = movie.PosterUrl, ReleaseDate = movie.ReleaseDate.GetValueOrDefault()});
-            }
+            }*/
             return movieCards;
         }
         public async Task<List<MovieCardResponseModel>> GetMoviesForGenre(int genreId)
